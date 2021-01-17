@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
-import Navbar from './components/Navbar/Navbar';
+import Navbar from '../../../lib/santex/components/DefaultNavBar/DefaultNavBar';
 import {BrowserRouter,Route,Switch} from 'react-router-dom';
-import GameSetup from './components/GameSetup/GameSetup';
-import GameBoard from './components/GameBoard/GameBoard';
-import FinishedGames from './components/FinishedGames/FinishedGames';
+import GameSetup from '../GameSetup/GameSetup';
+import GameBoard from '../GameBoard/GameBoard';
+import FinishedGames from '../FinishedGames/FinishedGames';
+import './App.css';
 
 class App extends Component {
   render() {

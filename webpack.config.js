@@ -3,7 +3,11 @@ module.exports = {
   entry: "./src/index.js",
   output: {
     path: path.resolve("dist"),
-    filename: "main.js",
+    filename: "./public/main.js",
+  },
+  devServer: {
+    inline:true,
+    port: 8008
   },
   devtool: 'eval-source-map',
   module: {
