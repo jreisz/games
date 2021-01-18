@@ -1,2 +1,2 @@
-# minesweeper
+# games
 POC for Santex
