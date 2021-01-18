@@ -4,10 +4,12 @@ module.exports = {
   output: {
     path: path.resolve("dist"),
     filename: "./public/main.js",
+    publicPath: '/',
   },
   devServer: {
     inline:true,
-    port: 8008
+    port: 8008,
+    historyApiFallback: true,
   },
   devtool: 'eval-source-map',
   module: {

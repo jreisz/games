@@ -34,7 +34,7 @@ Additional features are encouraged:
 Saving/loading (either server side or client side).
 Unit tests.
 Add a page that list all the games played by the user.
-The table must still appear if the page is refreshed.
++The table must still appear if the page is refreshed.
 The columns
 Start Time. Format: MM-DD-YYYY hh:mm (12hr format)
 End Time: Format: MM-DD-YYYY hh:mm (12hr format)
@@ -46,18 +46,20 @@ Multiplayer support.
 
 Technical constraints
 
-Language: Javascript ES6. Please use a framework/library relevant for the open position you are applying for (e.g., Angular or React).
-Use Webpack to build the app.
-If you use a starter-kit/boilerplate project, make sure you understand and are able to explain the structure and config files.
-Bonus:
+Language: Javascript ES6. 
++Please use a framework/library relevant for the open position you are applying for (e.g., Angular or React).
++Use Webpack to build the app.
++If you use a starter-kit/boilerplate project, make sure you understand and are able to explain the structure and config files.
++Bonus:
 Use SASS for styling
 Test your application.
-Use a linter.
++Use a linter.
 Coverage report.
 Deliverables
 
-Create a public repo into your bitbucket/github account. Once complete, email with the URL to your repo.
-
-Code quality is important to us. Your code must be well-structured and built in the spirit of maintainability and extendability.
-
-We will be evaluating your work and will expect you to demonstrate how you tested your app and what considerations should be included in a professional level app.
++Create a public repo into your bitbucket/github account. 
+-Once complete, email with the URL to your repo.
++Code quality is important to us. Your code must be well-structured and built in the spirit of maintainability and extendability.
++We will be evaluating your work and 
+-will expect you to demonstrate how you tested your app and what considerations should be included in a professional level app.
+```
