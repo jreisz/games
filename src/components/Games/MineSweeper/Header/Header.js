@@ -6,7 +6,6 @@ export class Header extends React.Component {
     super(props);
   
     this.setNewGame = this.setNewGame.bind(this);
-    this.setSuperMan = this.setSuperMan.bind(this);
   }
 
   setNewGame() {
@@ -19,13 +18,7 @@ export class Header extends React.Component {
     this.setState({ gameSettings });
     this.props.initFlags();
   }
-
-  setSuperMan() {
-    this.props.handlerSupermanModeClick(
-      document.getElementById("superManMode").checked
-    );
-  }
-
+  
   render() {
     return (
       <div>
@@ -48,14 +41,6 @@ export class Header extends React.Component {
             </Button>
           </div>
 
-          <div>
-            <Input
-              onClick={this.setSuperMan}
-              id="superManMode"
-              type="checkbox"
-            />{" "}
-            Superman Mode{" "}
-          </div>
           <div>
             <div style={{ marginTop: "5px" }}>
               {" "}

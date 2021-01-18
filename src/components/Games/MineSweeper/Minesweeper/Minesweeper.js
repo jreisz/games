@@ -10,13 +10,11 @@ class MinesWeeper extends React.Component {
       boardWidth:10,
       boardMines:10,
       numberOfFlags:10,
-      newGame:false,
-      superMan: false
+      newGame:false
     }
 
     this.getGameSettingsFromHeader = this.getGameSettingsFromHeader.bind(this);
     this.handleFlagClick = this.handleFlagClick.bind(this);
-    this.handlerSupermanModeClick = this.handlerSupermanModeClick.bind(this);
     this.handleWin = this.handleWin.bind(this);
     this.initFlags = this.initFlags.bind(this);
   }
@@ -43,25 +41,19 @@ class MinesWeeper extends React.Component {
     this.setState({ numberOfFlags: flags });    
   }
 
-  handlerSupermanModeClick(supermanMode){
-    this.setState({ superMan: supermanMode });
-  }
-
   render() {
     return (
       <div className="MinesWeeper">
         <div className="App-header">
           <Header initFlags={this.initFlags} 
                   newGameHandler={this.getGameSettingsFromHeader} 
-                  boardFlags={this.state.numberOfFlags} 
-                  handlerSupermanModeClick={this.handlerSupermanModeClick} />
+                  boardFlags={this.state.numberOfFlags} />
         </div>
         <div>
           <Board boardHeight={this.state.boardHeight} 
                  boardWidth={this.state.boardWidth} 
                  boardMines={this.state.boardMines} 
                  handleFlagClick={this.handleFlagClick}
-                 superMan={this.state.superMan}
                  handleWin={this.handleWin}
                  boardUsedFlags={this.state.numberOfFlags}
                  initFlags={this.initFlags}

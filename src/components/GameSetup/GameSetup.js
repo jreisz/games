@@ -1,17 +1,19 @@
-// this component for GameSetup page
 import React, { Component } from "react";
-import { Jumbotron, Button, Input, Row, Col } from "reactstrap";
+import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Row, Col } from "reactstrap";
 
 class GameSetup extends Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-          boardHeight: 10,
-          boardWidth: 10,
-          boardMines: 10,
-        };
-      }
-    
+  constructor(props) {
+    super(props);
+    this.state = {
+      dropdownOpen:false,
+      boardHeight: 10,
+      boardWidth: 10,
+      boardMines: 10,
+    };
+  }
+
+  toggle() { this.setState( {dropdownOpen: !dropdownOpen});}
+  
   render() {
     return (
       <div>
@@ -46,6 +48,18 @@ class GameSetup extends Component {
                 defaultValue={this.state.boardMines}
               />{" "}
             </span>
+          </Col>
+        </Row>
+        <Row>
+          <Col xs="12">
+            <Dropdown isOpen={dropdownOpen} toggle={toggle}>
+              <DropdownToggle caret>Difficulty</DropdownToggle>
+              <DropdownMenu>
+                <DropdownItem>Easy</DropdownItem>
+                <DropdownItem>Medium</DropdownItem>
+                <DropdownItem>Hard</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
           </Col>
         </Row>
       </div>
