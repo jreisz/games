@@ -1,11 +1,14 @@
 {
+  "homepage": "https://jreisz.github.io/games/",
   "name": "minesweeper",
   "version": "1.0.0",
   "description": "POC for Santex",
   "main": "index.js",
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "start": "webpack-dev-server",
-    "build": "webpack",
+    "build": "webpack --mode production",
     "test": "jest"
   },
   "repository": {
@@ -17,7 +20,6 @@
   "bugs": {
     "url": "https://github.com/jreisz/minesweeper/issues"
   },
-  "homepage": "https://github.com/jreisz/minesweeper#readme",
   "devDependencies": {
     "@babel/core": "^7.12.10",
     "@babel/preset-env": "^7.12.11",
@@ -38,11 +40,13 @@
     "bootstrap": "^4.5.3",
     "css-loader": "^5.0.1",
     "file-loader": "^6.2.0",
+    "gh-pages": "^3.1.0",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-fontawesome": "^1.7.1",
     "react-redux": "^7.2.2",
     "react-router-dom": "^5.2.0",
+    "react-scripts": "^4.0.1",
     "react-test-renderer": "^17.0.1",
     "reactstrap": "^8.8.1",
     "redux": "^4.0.5",
