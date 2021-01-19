@@ -1,2 +1,2 @@
 
-export const remainingBombs = remainingBombs => ({ type: "SET_REMAINING_BOMBS", payload: { remainingBombs } });
+export const setRemainingBombs = remainingBombs => ({ type: "SET_REMAINING_BOMBS", payload: { remainingBombs } });

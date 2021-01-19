@@ -1,4 +1,7 @@
 import React, { Component } from "react";
+import 'bootstrap/dist/css/bootstrap.min.css';
+import {connect} from 'react-redux';
+import { setDifficulty,setWidth,setHeight,setMines } from '../../store/SetUp/actions'
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Row, Col } from "reactstrap";
 
 class GameSetup extends Component {
@@ -6,58 +9,68 @@ class GameSetup extends Component {
     super(props);
     this.state = {
       dropdownOpen:false,
+      dropDownValue:'Easy',
       boardHeight: 10,
       boardWidth: 10,
       boardMines: 10,
     };
+    this.changeValue = this.changeValue.bind(this); 
   }
+  changeValue(e) {
 
-  toggle() { this.setState( {dropdownOpen: !dropdownOpen});}
+    this.props.setDifficulty(e.currentTarget.textContent)
+  }
+  
+  toggle() { this.setState( {dropdownOpen: !this.state.dropdownOpen});}
   
   render() {
     return (
-      <div>
-        <h1>GameSetup Page</h1>
+      <div style={{paddingTop:50}}>
         <Row>
           <Col xs="4">
             <span>
-              {" "}
               Width:{" "}
               <input
                 id="widthInput"
-                defaultValue={this.state.boardHeight}
+                value={this.props.width}
+                onChange={(e)=>this.props.setWidth(e.target.value)}
               />{" "}
             </span>
           </Col>
           <Col xs="4">
             <span>
-              {" "}
               Height:{" "}
               <input
                 id="heightInput"
-                defaultValue={this.state.boardWidth}
+                value={this.props.height}
+                onChange={(e)=>{
+                  this.props.setHeight(e.target.value)}}
               />{" "}
             </span>
           </Col>
           <Col xs="4">
             <span>
-              {" "}
               Mines:{" "}
               <input
                 id="minesInput"
-                defaultValue={this.state.boardMines}
-              />{" "}
+                defaultValue={this.props.mines}
+                onChange={(e)=>this.props.setMines(e.target.value)}
+              />
             </span>
           </Col>
         </Row>
+        
+        <Row>
+          <br></br>
+        </Row>
         <Row>
           <Col xs="12">
-            <Dropdown isOpen={dropdownOpen} toggle={toggle}>
-              <DropdownToggle caret>Difficulty</DropdownToggle>
+            <Dropdown isOpen={this.state.dropdownOpen} toggle={() =>this.toggle()} >
+              <DropdownToggle caret>Difficulty: {this.props.dropDownValue}</DropdownToggle>
               <DropdownMenu>
-                <DropdownItem>Easy</DropdownItem>
-                <DropdownItem>Medium</DropdownItem>
-                <DropdownItem>Hard</DropdownItem>
+                <DropdownItem onClick={this.changeValue}>Easy</DropdownItem>
+                <DropdownItem onClick={this.changeValue}>Medium</DropdownItem>
+                <DropdownItem onClick={this.changeValue}>Hard</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </Col>
@@ -66,4 +79,15 @@ class GameSetup extends Component {
     );
   }
 }
-export default GameSetup;
+const mapStateToProps = state => 
+  {
+    return {
+      dropDownValue : state.Setup.difficulty,
+      height : state.Setup.height,
+      width : state.Setup.width,
+      mines : state.Setup.mines
+    }
+}
+export default connect(
+  mapStateToProps, { setDifficulty, setWidth, setHeight, setMines }
+)( GameSetup)

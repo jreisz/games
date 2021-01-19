@@ -17,6 +17,7 @@ module.exports = {
       { test: /\.jsx?$/, loader: "babel-loader", exclude: /node_modules/ },
       { test: /\.css$/, use: [ 'style-loader', 'css-loader' ] },
       { test: /\.s[ac]ss$/i, use: ["style-loader", "css-loader", "sass-loader", ],},
+      { test: /\.(jpe?g|png|gif|svg)$/i, loader: 'file-loader', options: {esModule: false,},},
     ],
   },
 };

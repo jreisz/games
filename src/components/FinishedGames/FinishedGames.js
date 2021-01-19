@@ -6,26 +6,23 @@ import {
   DropdownItem,
   Row,
   Col,
-  Container
+  Container,
 } from "reactstrap";
 
 class FinishedGames extends Component {
   render() {
     return (
       <>
-        <h1>FinishedGames Page</h1>
         <Container>
-      <Row>
-        <Col>.col</Col>
-      </Row>
-      <Row>
-        <Col>.col</Col>
-        <Col>.col</Col>
-        <Col>.col</Col>
-        <Col>.col</Col>
-      </Row>
-      </Container>
-       
+          <Row>
+            <Col>
+            <br></br><br></br><br></br>
+            <img style={{height:120}} src={require("../../../public/assets/img/comingsoon.png")} />
+            <br></br>
+              <img src={require("../../../public/assets/img/happyface.png")} />
+            </Col>
+          </Row>
+        </Container>
       </>
     );
   }
