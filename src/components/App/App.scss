@@ -1,0 +1,28 @@
+.App {
+	text-align: center;
+}
+.board {
+	margin: auto;
+	position: relative;
+	top: 100px;
+	overflow-x: 'auto';
+}
+#board-root {
+	top: -100px;
+	position: relative;
+}
+.td-cell {
+	border: 1px solid rgba(100, 100, 100, 0.6);
+}
+.game-settings {
+	max-width: 500px;
+}
+.newGameBtn {
+	margin-top: '20px';
+}
+.flagsCounter {
+	margin-top: '5px';
+}
+.instructions {
+	font-size: 14px;
+}
