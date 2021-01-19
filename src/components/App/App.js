@@ -4,7 +4,7 @@ import {BrowserRouter,Route,Switch} from 'react-router-dom';
 import GameSetup from '../GameSetup/GameSetup';
 import GameBoard from '../GameBoard/GameBoard';
 import FinishedGames from '../FinishedGames/FinishedGames';
-import './App.css';
+import './App.scss';
 
 class App extends Component {
   render() {

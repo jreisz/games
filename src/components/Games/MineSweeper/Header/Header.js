@@ -1,13 +1,18 @@
 import React from "react";
-import { Jumbotron, Button, Input, Row, Col } from "reactstrap";
+import { Jumbotron, Button } from "reactstrap";
 
 export class Header extends React.Component {
   constructor(props) {
     super(props);
-  
+    this.state = {
+      startButton : '😃'
+    }
     this.setNewGame = this.setNewGame.bind(this);
   }
-
+  
+  setNewGame() {
+    this.setState({startButton: startButton==='😃'?'😫':'😃'  })
+  }
   setNewGame() {
     let gameSettings = {
       boardHeight: 10,
@@ -36,8 +41,7 @@ export class Header extends React.Component {
           
           <div className="newGameBtn" style={{ margin: "15px" }}>
             <Button onClick={this.setNewGame} color="primary">
-              {" "}
-              New Game{" "}
+            {this.state.startButton}
             </Button>
           </div>
 
@@ -52,3 +56,5 @@ export class Header extends React.Component {
     );
   }
 }
+
+
