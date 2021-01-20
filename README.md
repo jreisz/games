@@ -3,14 +3,14 @@
 
 A React clone of Minesweeper.
 
-[Demo](https://saitoxu.io/playground/react-minesweeper)
+[Demo](https://jreisz.github.io/games)
 
 ![Screenshot](screenshot.gif)
 
 ## Development
 
 ```sh
-$ git clone https://github.com/saitoxu/games.git
+$ git clone https://github.com/jreisz/games.git
 $ cd games
 $ npm install
 $ npm start
