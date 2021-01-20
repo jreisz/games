@@ -27,7 +27,7 @@ class Cell extends React.Component {
 
   showCellSymbol() {
     if (this.props.data.flag) {
-      return <FontAwesome className="image-icon" name="flag" title="flag" />;
+      return "⚑";
     }
     if (this.props.data.reveald) {
       if (this.props.data.mine) {

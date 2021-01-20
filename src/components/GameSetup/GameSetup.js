@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {connect} from 'react-redux';
 import { setDifficulty,setWidth,setHeight,setMines } from '../../store/SetUp/actions'
+import { setRemainingFlags } from '../../store/MineSweeper/actions'
+
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Row, Col } from "reactstrap";
 
 class GameSetup extends Component {
@@ -54,7 +56,7 @@ class GameSetup extends Component {
               <input
                 id="minesInput"
                 defaultValue={this.props.mines}
-                onChange={(e)=>this.props.setMines(e.target.value)}
+                onChange={(e)=> {this.props.setMines(e.target.value);this.props.setRemainingFlags(e.target.value); }}
               />
             </span>
           </Col>
@@ -89,5 +91,5 @@ const mapStateToProps = state =>
     }
 }
 export default connect(
-  mapStateToProps, { setDifficulty, setWidth, setHeight, setMines }
+  mapStateToProps, { setDifficulty, setWidth, setHeight, setMines,setRemainingFlags }
 )( GameSetup)

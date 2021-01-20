@@ -1,14 +1,14 @@
 
 const initialState = {
-    remainingBombs: 10,
+    remainingFlags: 10,
   };
   
 const MineSweeper = (state = initialState, action) => {
   switch (action.type) {
-    case "SET_REMAINING_BOMBS": {
+    case "SET_REMAINING_FLAGS": {
       return {
         ...state,
-        remainingBombs:action.payload.remainingBombs
+        remainingFlags:action.payload.remainingFlags
       };
     }
     default: {

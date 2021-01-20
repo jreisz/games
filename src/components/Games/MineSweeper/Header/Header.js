@@ -41,7 +41,7 @@ import { setNewGame } from '../../../../store/SetUp/actions'
         <div>
           <div style={{ marginTop: "5px" }}>
             {" "}
-            Flags left: {this.props.remainingBombs}
+            Flags left: {this.props.remainingFlags}
           </div>
         </div>
       </>
@@ -51,7 +51,7 @@ import { setNewGame } from '../../../../store/SetUp/actions'
 const mapStateToProps = state => 
   {
     return {
-      remainingBombs: state.MineSweeper.remainingBombs
+      remainingFlags: state.MineSweeper.remainingFlags
     }
 }
 export default connect(

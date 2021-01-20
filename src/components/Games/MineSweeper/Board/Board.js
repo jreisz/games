@@ -1,7 +1,7 @@
 import React from "react";
 import { Cell } from "../Cell/Cell.js";
 import { connect } from "react-redux";
-import { setRemainingBombs } from "../../../../store/MineSweeper/actions";
+import { setRemainingFlags } from "../../../../store/MineSweeper/actions";
 
 class Board extends React.Component {
   constructor(props) {
@@ -67,7 +67,7 @@ class Board extends React.Component {
     minesArray = this.shuffleMines(boardCells);
     this.fillMinesInBoardAndAddValueToNeighbors(boardCells, minesArray);
     this.setState({ boardCells, flaggedMines: 0 });
-    this.props.setRemainingBombs(this.props.mines);
+    this.props.setRemainingFlags(this.props.mines);
   }
 
   createBoard() {
@@ -124,25 +124,13 @@ class Board extends React.Component {
   }
 
   flagClicked(cellData) {
-    if (this.props.remainingBombs === 0 && !cellData.flag) {
+    if (this.props.remainingFlags === 0 && !cellData.flag) {
       alert("You dont have any more flags!");
     } else {
       const isCellFlagged = this.updateBoardWithFlag(cellData);
-      let flaggedMines = this.state.flaggedMines;
-      this.props.handleFlagClick(isCellFlagged);
-
-      if (!isCellFlagged && cellData.mine) {
-        flaggedMines--;
-      }
-      if (isCellFlagged && cellData.mine) {
-        flaggedMines++;
-        if (flaggedMines >= this.props.mines) {
-          this.handleWin();
-          this.buildBoard();
-        }
-      }
-
-      this.setState({ flaggedMines });
+      let flaggedCells =  isCellFlagged ? this.props.remainingFlags-1:this.props.remainingFlags+1;
+      
+      this.props.setRemainingFlags(flaggedCells);
     }
   }
 
@@ -215,15 +203,8 @@ class Board extends React.Component {
     this.buildBoard();
   }
   handleWin() {
-    this.props.setRemainingBombs(this.props.mines);
+    this.props.setRemainingFlags(this.props.mines);
     alert("You win!");
-  }
-
-  handleFlagClick(isFlagged) {
-    const flags = isFlagged
-      ? this.props.remainingBombs - 1
-      : this.state.remainingBombs + 1;
-    this.props.setRemainingBombs(flags);
   }
 
   render() {
@@ -269,8 +250,8 @@ const mapStateToProps = (state) => {
     height: state.Setup.height,
     width: state.Setup.width,
     mines: state.Setup.mines,
-    remainingBombs: state.MineSweeper.remainingBombs,
+    remainingFlags: state.MineSweeper.remainingFlags,
   };
 };
 
-export default connect(mapStateToProps, { setRemainingBombs })(Board);
+export default connect(mapStateToProps, { setRemainingFlags })(Board);
