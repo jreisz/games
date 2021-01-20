@@ -9,7 +9,7 @@ import './App.scss';
 class App extends Component {
   render() {
     return (
-      <BrowserRouter>
+      <BrowserRouter basename="/games">
       <div className="App">
         <Navbar/>
         <Switch>
