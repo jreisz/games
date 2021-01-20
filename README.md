@@ -5,7 +5,7 @@ A React clone of Minesweeper.
 
 [Demo](https://jreisz.github.io/games)
 
-![Screenshot](screenshot.gif)
+![Screenshot](./public/assets/img/demo.gif)
 
 ## Development
 
@@ -30,7 +30,7 @@ Changes and improvements are more than welcome! Feel free to fork and open a pul
 
 ## License
 
-[MIT](http://opensource.org/licenses/MIT)
+[GNU v3.0](https://opensource.org/licenses/GPL-3.0)
 
 Copyright (c) Juan Manuel Reisz 2021
 >>>>>>> develop
