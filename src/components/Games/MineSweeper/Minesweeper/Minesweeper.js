@@ -1,19 +1,26 @@
 import React from 'react';
 import  Board  from '../Board/Board.js';
 import  Header  from '../Header/Header.js';
+import { connect } from "react-redux";
 
 class MineSweeper extends React.Component {
   render() {
     return (
       <div className="MinesWeeper">
         <div className="App-header">
-          <Header />
+          <Header  />
         </div>
         <div>
-          <Board />
+          <Board newGame={this.props.newGame}/> 
         </div>
       </div>
     );
   }
 }
-export default MineSweeper;
+const mapStateToProps = (state) => {
+  return {
+    newGame: state.Setup.newGame,
+  };
+};
+
+export default connect(mapStateToProps)(MineSweeper);

@@ -11,7 +11,28 @@ const initialState = {
 const Presets = (state = initialState, action) => {
   switch (action.type) {
     case "SET_DIFFICULTY": {
-      return { ...state, difficulty: action.payload.difficulty };
+      return {
+        ...state,
+        difficulty: action.payload.difficulty,
+        width:
+          action.payload.difficulty == DIFFICULTY.EASY
+            ? 10
+            : action.payload.difficulty == DIFFICULTY.MEDIUM
+            ? 15
+            : 15,
+        height:
+          action.payload.difficulty == DIFFICULTY.EASY
+            ? 10
+            : action.payload.difficulty == DIFFICULTY.MEDIUM
+            ? 15
+            : 30,
+        mines:
+          action.payload.difficulty == DIFFICULTY.EASY
+            ? 10
+            : action.payload.difficulty == DIFFICULTY.MEDIUM
+            ? 40
+            : 99,
+      };
     }
     case "SET_WIDTH": {
       return { ...state, width: action.payload.width };

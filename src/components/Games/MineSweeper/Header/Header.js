@@ -2,39 +2,39 @@ import React from "react";
 import { Jumbotron, Button } from "reactstrap";
 import {connect} from 'react-redux';
 import { setNewGame } from '../../../../store/SetUp/actions'
-
+import { setGameStatus } from '../../../../store/MineSweeper/actions'
 
  class Header extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      startButton: "😃",
-    };//😫
     this.setNewGame = this.setNewGame.bind(this);
   }
 
   setNewGame() {
-    this.setState({ startButton:  "😃"  });
+    console.log('setNewGame')
+    this.props.setGameStatus("😃");
     this.props.setNewGame(true);
   }
 
   render() {
     return (
       <>
-        <Jumbotron style={{padding:40}}>
+        <Jumbotron style={{padding:20}}>
           <h1 className="display-4">Welcome to Minesweeper game !</h1>
           <div className="instructions">
             You are presented with a board of squares. Some squares contain
             mines (bombs), others don't. <br />
-            If you click on a square containing a bomb, you lose. <br /> If you
+            During the game, you'll see numbers that represent the quantity of neighbours squares with bombs. <br /><br />
+            If you click on a square
+            e containing a bomb, you lose. <br /> If you
             manage to click all the squares (without clicking on any bombs) you
             win. <br /> Mark with flags the bombs (shift+click)
           </div>
         </Jumbotron>
         
-        <div className="newGameBtn" style={{ margin: "15px" }}>
+        <div className="newGameBtn" style={{ margin: "0px" }}>
           <Button onClick={this.setNewGame} color="primary">
-            {this.state.startButton}
+            New Game {this.props.gameStatus}
           </Button>
         </div>
 
@@ -51,9 +51,11 @@ import { setNewGame } from '../../../../store/SetUp/actions'
 const mapStateToProps = state => 
   {
     return {
-      remainingFlags: state.MineSweeper.remainingFlags
+      remainingFlags: state.MineSweeper.remainingFlags,
+      gameStatus: state.MineSweeper.gameStatus
+
     }
 }
 export default connect(
-  mapStateToProps, { setNewGame }
+  mapStateToProps, { setNewGame, setGameStatus }
 )( Header)

@@ -55,7 +55,7 @@ class GameSetup extends Component {
               Mines:{" "}
               <input
                 id="minesInput"
-                defaultValue={this.props.mines}
+                value={this.props.mines}
                 onChange={(e)=> {this.props.setMines(e.target.value);this.props.setRemainingFlags(e.target.value); }}
               />
             </span>
