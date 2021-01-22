@@ -3,8 +3,8 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {connect} from 'react-redux';
 import { setDifficulty,setWidth,setHeight,setMines } from '../../store/SetUp/actions'
 import { setRemainingFlags } from '../../store/MineSweeper/actions'
-
 import {Dropdown, DropdownToggle, DropdownMenu, DropdownItem, Row, Col } from "reactstrap";
+import "./GameSetup.scss";
 
 class GameSetup extends Component {
   constructor(props) {
@@ -34,8 +34,10 @@ class GameSetup extends Component {
               Width:{" "}
               <input
                 id="widthInput"
+                readOnly='readOnly'
+                className='__gameSetup_input-readonly'
                 value={this.props.width}
-                onChange={(e)=>this.props.setWidth(e.target.value)}
+                
               />{" "}
             </span>
           </Col>
@@ -45,8 +47,9 @@ class GameSetup extends Component {
               <input
                 id="heightInput"
                 value={this.props.height}
-                onChange={(e)=>{
-                  this.props.setHeight(e.target.value)}}
+                className='__gameSetup_input-readonly'
+                readOnly='readOnly'
+                
               />{" "}
             </span>
           </Col>
@@ -56,7 +59,9 @@ class GameSetup extends Component {
               <input
                 id="minesInput"
                 value={this.props.mines}
-                onChange={(e)=> {this.props.setMines(e.target.value);this.props.setRemainingFlags(e.target.value); }}
+                className='__gameSetup_input-readonly'
+                readOnly='readOnly'
+                
               />
             </span>
           </Col>
