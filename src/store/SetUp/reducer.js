@@ -1,17 +1,17 @@
 import { DIFFICULTY } from "../../constants";
 
 const initialState = {
-  width: 10,
-  height: 10,
-  mines: 10,
+  width: 4,
+  height: 4,
+  mines: 1,
   newGame: true,
-  difficulty: DIFFICULTY.EASY,
+  loadGame:false,
+  difficulty: DIFFICULTY.KINDER,
 };
 
 const Presets = (state = initialState, action) => {
   switch (action.type) {
     case "SET_DIFFICULTY": {
-      debugger;
       return {
         ...state,
         difficulty: action.payload.difficulty,
@@ -20,19 +20,25 @@ const Presets = (state = initialState, action) => {
             ? 10
             : (action.payload.difficulty == DIFFICULTY.MEDIUM
             ? 15
-            : 15)),
+            : (action.payload.difficulty == DIFFICULTY.HARD
+            ? 15
+            : 4))),
         height:
           (action.payload.difficulty == DIFFICULTY.EASY
             ? 10
             : (action.payload.difficulty == DIFFICULTY.MEDIUM
             ? 15
-            : 30)),
+            : (action.payload.difficulty == DIFFICULTY.HARD
+              ? 30
+              : 4))),
         mines:
           (action.payload.difficulty == DIFFICULTY.EASY
             ? 10
             : (action.payload.difficulty == DIFFICULTY.MEDIUM
             ? 40
-            : 99)),
+            : (action.payload.difficulty == DIFFICULTY.HARD
+              ? 99
+              : 1))),
       };
     }
     case "SET_WIDTH": {
@@ -46,6 +52,9 @@ const Presets = (state = initialState, action) => {
     }
     case "SET_NEWGAME": {
       return { ...state, newGame: action.payload.newGame };
+    }
+    case "SET_LOADGAME": {
+      return { ...state, loadGame: action.payload.loadGame };
     }
     default: {
       return state;

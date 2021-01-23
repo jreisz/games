@@ -1,8 +1,12 @@
+import {toMMddyyyyhhmmss} from '../../../lib/santex/utils/dateFormatter';
 
 const initialState = {
     remainingFlags: 10,
     remainingNonBombCells: 90,
-    gameStatus: '😃'
+    boardCells:[],
+    gameStatus: '😃',
+    gameId:Math.random().toString(36).substring(7),
+    startTime: toMMddyyyyhhmmss(new Date())
   };
   
 const MineSweeper = (state = initialState, action) => {
@@ -11,6 +15,12 @@ const MineSweeper = (state = initialState, action) => {
       return {
         ...state,
         remainingFlags:action.payload.remainingFlags
+      };
+    }
+    case "SET_BOARD_CELLS": {
+      return {
+        ...state,
+        boardCells:action.payload.boardCells
       };
     }
     case "SET_GAME_STATUS": {
@@ -23,6 +33,18 @@ const MineSweeper = (state = initialState, action) => {
       return {
         ...state,
         remainingNonBombCells:action.payload.remainingNonBombCells
+      };
+    }
+    case "SET_START_TIME": {
+      return {
+        ...state,
+        startTime: toMMddyyyyhhmmss(new Date())
+      };
+    }
+    case "SET_GAME_ID": {
+      return {
+        ...state,
+        gameId: Math.random().toString(36).substring(7)
       };
     }
     default: {

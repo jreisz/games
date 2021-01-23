@@ -1,18 +1,29 @@
 import React from "react";
 import { Cell } from "../Cell/Cell.js";
 import { connect } from "react-redux";
-import { setRemainingFlags,setRemainingNonBombCells } from "../../../../store/MineSweeper/actions";
-import { setNewGame} from "../../../../store/SetUp/actions";
-import { setGameStatus} from "../../../../store/MineSweeper/actions";
+import {
+  setRemainingFlags,
+  setBoardCells,
+  setStartTime,
+  setRemainingNonBombCells,
+  setGameStatus,
+  setGameId,
+} from "../../../../store/MineSweeper/actions";
+import {
+  addSavedGame,
+  editSavedGame,
+} from "../../../../store/SavedGames/actions";
+import { setNewGame } from "../../../../store/SetUp/actions";
+import {toMMddyyyyhhmm, toMMddyyyyhhmmss,ssdiffMMddyyyyhhmmss,toss} from '../../../../../lib/santex/utils/dateFormatter';
 
 class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      boardCells: [],
       shiftIsPressed: false,
-      flaggedMines: 0,
       flaggedCount: 0,
+      containerHeight: `${this.getContainerHeight()}`,
+      containerWidth: `${this.getContainerWidth()}`,
     };
 
     this.mineClicked = this.mineClicked.bind(this);
@@ -21,15 +32,9 @@ class Board extends React.Component {
     this.runOnNeighbors = this.runOnNeighbors.bind(this);
   }
 
-  componentWillMount() {
-    this.buildBoard();
-    this.setState({
-      containerHeight: `${this.getContainerHeight()}`,
-      containerWidth: `${this.getContainerWidth()}`,
-    });
-  }
-
   componentDidMount() {
+    this.buildBoard();
+
     window.addEventListener("keyup", this.keyUnpressed.bind(this));
     window.addEventListener("keydown", this.keyPressed.bind(this));
   }
@@ -68,12 +73,21 @@ class Board extends React.Component {
     boardCells = this.createBoard();
     minesArray = this.shuffleMines(boardCells);
     this.fillMinesInBoardAndAddValueToNeighbors(boardCells, minesArray);
-    this.setState({ boardCells, flaggedMines: 0 });
+
+    this.props.setStartTime();
+    this.props.setBoardCells(boardCells);
     this.props.setRemainingFlags(this.props.mines);
-    this.props.setRemainingNonBombCells((this.props.width*this.props.height) - this.props.mines)
+    this.props.setRemainingNonBombCells(
+      this.props.width * this.props.height - this.props.mines
+    );
     this.props.setNewGame(false);
   }
-
+  loadBoard(boardCells) {
+    this.props.setBoardCells(boardCells);
+    this.props.setRemainingFlags(this.props.mines);
+    this.props.setRemainingNonBombCells();
+    this.props.loadGame(false);
+  }
   createBoard() {
     let boardCells = [];
     for (let i = 0; i < this.props.height; i++) {
@@ -140,22 +154,22 @@ class Board extends React.Component {
     }
   }
 
-  updateBoardWithFlag(cellData) {
-    const isFlagged = !this.state.boardCells[cellData.location.width][
+  async updateBoardWithFlag(cellData) {
+    const isFlagged = !this.props.boardCells[cellData.location.width][
       cellData.location.height
     ].flag;
-    let updatedCellBoard = this.state.boardCells.map((arr) => arr.slice());
+    let updatedCellBoard = this.props.boardCells.map((arr) => arr.slice());
     updatedCellBoard[cellData.location.width][
       cellData.location.height
     ].flag = isFlagged;
-    this.setState({ boardCells: updatedCellBoard });
+    await this.props.setBoardCells(updatedCellBoard);
     return isFlagged;
   }
   updateBoardWithMine(cellData) {
-    const isFlagged = !this.state.boardCells[cellData.location.width][
+    const isFlagged = !this.props.boardCells[cellData.location.width][
       cellData.location.height
     ].flag;
-    let updatedCellBoard = this.state.boardCells.map((arr) => arr.slice());
+    let updatedCellBoard = this.props.boardCells.map((arr) => arr.slice());
     updatedCellBoard[cellData.location.width][
       cellData.location.height
     ].flag = isFlagged;
@@ -166,15 +180,16 @@ class Board extends React.Component {
   componentDidUpdate() {
     if (this.props.newGame) {
       this.buildBoard();
+    } else if (this.props.loadGame) {
+      this.loadBoard();
     }
   }
 
   async revealCells(clickedCell) {
-    var newBoardCells = this.state.boardCells.map((arr) => arr.slice());
+    var newBoardCells = this.props.boardCells.map((arr) => arr.slice());
 
     if (clickedCell == undefined) {
-
-      for (var i = 0; i < newBoardCells.length ; i++) {
+      for (var i = 0; i < newBoardCells.length; i++) {
         for (var j = 0; j < newBoardCells[i].length; j++) {
           newBoardCells[i][j].reveald = true;
         }
@@ -184,14 +199,15 @@ class Board extends React.Component {
     }
     if (clickedCell.value > 0) {
       clickedCell.reveald = true;
-      newBoardCells[clickedCell.location.width][clickedCell.location.height];
-      await this.props.setRemainingNonBombCells(this.props.remainingNonBombCells - 1);    
-      
-      if(this.props.remainingNonBombCells == -1){
+
+      await this.props.setRemainingNonBombCells(
+        this.props.remainingNonBombCells - 1
+      );
+
+      if (this.props.remainingNonBombCells === 0) {
         this.handleWin();
       }
-    }
-     else {
+    } else {
       this.runOnNeighbors(
         clickedCell.location.width,
         clickedCell.location.height,
@@ -202,7 +218,7 @@ class Board extends React.Component {
     this.setState({ boardCells: newBoardCells });
   }
 
-   async runOnNeighbors(cellWidth, cellHeight, newBoardCells, isFillMinesFlow) {
+  async runOnNeighbors(cellWidth, cellHeight, newBoardCells, isFillMinesFlow) {
     let neighborsToCheck = [];
     neighborsToCheck.push(newBoardCells[cellWidth][cellHeight]);
 
@@ -223,12 +239,16 @@ class Board extends React.Component {
             !neighbor.flag
           ) {
             neighbor.reveald = true;
-            await this.props.setRemainingNonBombCells(this.props.remainingNonBombCells - 1)
-            if(this.props.remainingNonBombCells == -1){
-              this.handleWin();
-            }
+            await this.props.setRemainingNonBombCells(
+              this.props.remainingNonBombCells - 1
+            );
+
             if (neighbor.value === 0) {
               neighborsToCheck.push(neighbor);
+            }
+
+            if (this.props.remainingNonBombCells === 0) {
+              this.handleWin();
             }
           }
         }
@@ -237,36 +257,100 @@ class Board extends React.Component {
   }
 
   mineClicked(cellData) {
-   
     cellData.isGameOverCell = true;
-    
-    var cellFailure = document.querySelectorAll('.board tr')[parseInt(cellData.location.width)].querySelectorAll('td')[cellData.location.height]
 
-    setTimeout(() => {
-      alert("You clicked on a Mine! :(");  
-    }, 100);
+    var cellFailure = document
+      .querySelectorAll(".board tr")
+      [parseInt(cellData.location.width)].querySelectorAll("td")[
+      cellData.location.height
+    ];
+
+    setTimeout( async function() {
+      let game = this.props.savedGames.find(
+        (game) => game.gameId === this.props.gameId
+      );
+      if (game !==undefined) {
+        game.status = "Lost";
+        game.endTime = toMMddyyyyhhmmss(new Date());
+        game.totalSpentTime= ssdiffMMddyyyyhhmmss( game.endTime - game.startTime),
+          
+        this.props.editSavedGame(game);
+      } else {
+        game = {
+          SetUp: {
+            difficulty: this.props.difficulty,
+            difficultyId: this.props.difficultyId,
+          },
+          MineSweeper: {
+            remainingFlags: this.props.remainingFlags,
+            remainingNonBombCells: this.props.remainingNonBombCells,
+            gameStatus: this.props.gameStatus,
+            boardCells: this.props.boardCells,
+          },
+          startTime: this.props.startTime,
+          endTime: toMMddyyyyhhmmss(new Date()),
+          totalSpentTime: ssdiffMMddyyyyhhmmss(toMMddyyyyhhmmss(new Date()),this.props.startTime),
+          status: "Lost",
+          gameId: this.props.gameId,
+        };
+        await this.props.addSavedGame(game);
+        await this.props.setGameId();
+      }
+
+      alert("You clicked on a Mine! :(");
+    }.bind(this), 100);
     this.revealCells();
     this.props.setGameStatus("😫");
 
-    cellFailure.style.backgroundColor='Orange';
-    
+    cellFailure.style.backgroundColor = "Orange";
   }
   handleWin() {
     this.props.setRemainingFlags(this.props.mines);
-    
-    var newBoardCells = this.state.boardCells.map((arr) => arr.slice());
 
-      for (var i = 0; i < newBoardCells.length ; i++) {
-        for (var j = 0; j < newBoardCells[i].length; j++) {
-          if(newBoardCells[i][j].mine){
-            newBoardCells[i][j].flag = true;
-          }
+    var newBoardCells = this.props.boardCells.map((arr) => arr.slice());
+
+    for (var i = 0; i < newBoardCells.length; i++) {
+      for (var j = 0; j < newBoardCells[i].length; j++) {
+        if (newBoardCells[i][j].mine) {
+          newBoardCells[i][j].flag = true;
         }
       }
-      setTimeout(() => {
-        alert("You win!");    
-      }, 100);
-    
+    }
+    setTimeout(async function() {
+      let game = this.props.savedGames.find(
+        (game) => game.gameId === this.props.gameId
+      );
+      if (game !==undefined) {
+        game.status = "Won";
+        game.endTime = toMMddyyyyhhmmss(new Date());
+        game.totalSpentTime= ssdiffMMddyyyyhhmmss( toMMddyyyyhhmmss( new Date()) - game.startTime),
+        await this.props.editSavedGame(game);
+        await this.props.setGameStatus("😃");
+        await this.props.setGameId();
+      } else {
+        game = {
+          SetUp: {
+            difficulty: this.props.difficulty,
+            difficultyId: this.props.difficultyId,
+          },
+          MineSweeper: {
+            remainingFlags: this.props.remainingFlags,
+            remainingNonBombCells: this.props.remainingNonBombCells,
+            gameStatus: this.props.gameStatus,
+            boardCells: this.props.boardCells,
+          },
+          startTime: this.props.startTime,
+          endTime: toMMddyyyyhhmmss(new Date()),
+          totalSpentTime:ssdiffMMddyyyyhhmmss( toMMddyyyyhhmmss( new Date()) , this.props.startTime),
+          status: "Won",
+          gameId: this.props.gameId,
+        };
+        await this.props.setGameId();
+        await this.props.setGameStatus("😃");
+        await this.props.addSavedGame(game);
+      }
+      alert("You win!");
+    }.bind(this), 100);
   }
 
   render() {
@@ -280,7 +364,7 @@ class Board extends React.Component {
           }}
         >
           <tbody>
-            {this.state.boardCells.map((row, rowIndex) => (
+            {this.props.boardCells.map((row, rowIndex) => (
               <tr key={rowIndex}>
                 {row.map((cell, cellIndex) => (
                   <Cell
@@ -313,7 +397,27 @@ const mapStateToProps = (state) => {
     mines: state.Setup.mines,
     remainingFlags: state.MineSweeper.remainingFlags,
     remainingNonBombCells: state.MineSweeper.remainingNonBombCells,
+    gameStatus: state.MineSweeper.gameStatus,
+    boardCells: state.MineSweeper.boardCells,
+    savedGames: state.SavedGames,
+    boardCells: state.MineSweeper.boardCells,
+    gameId: state.MineSweeper.gameId,
+    difficulty: state.Setup.difficulty,
+    difficultyId: state.Setup.difficulty,
+    startTime: state.MineSweeper.startTime,
+    totalSpentTime: state.MineSweeper.totalSpentTime,
+    status: state.MineSweeper.status,
   };
 };
 
-export default connect(mapStateToProps, { setRemainingFlags,setRemainingNonBombCells, setNewGame,setGameStatus })(Board);
+export default connect(mapStateToProps, {
+  setRemainingFlags,
+  setBoardCells,
+  setRemainingNonBombCells,
+  setNewGame,
+  setGameStatus,
+  addSavedGame,
+  editSavedGame,
+  setStartTime,
+  setGameId
+})(Board);

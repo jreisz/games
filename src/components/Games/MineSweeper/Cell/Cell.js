@@ -15,12 +15,11 @@ class Cell extends React.Component {
       revealdCell: false,
       isGameOverCell: false,
       isShiftPressed: this.props.isShiftPressed,
+      cellWidth: defualtCellSize, 
+      cellHeight: defualtCellSize
     };
     this.clickOnCell = this.clickOnCell.bind(this);
     this.numberColor = this.numberColor.bind(this);
-  }
-  componentWillMount() {
-    this.setState({ cellWidth: defualtCellSize, cellHeight: defualtCellSize });
   }
   componentDidMount() {
     this.setState({ isShiftPressed: this.props.isShiftPressed });

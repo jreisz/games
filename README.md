@@ -23,8 +23,7 @@ Changes and improvements are more than welcome! Feel free to fork and open a pul
 ## TODO
 
 - Multiplayer support
-- Saving/loading
-- Finished Games List
+- Add more Unit Tests
 - Improve design
 - Refactoring
 

@@ -11,7 +11,7 @@ class MineSweeper extends React.Component {
           <Header  />
         </div>
         <div>
-          <Board newGame={this.props.newGame}/> 
+          <Board newGame={this.props.newGame} loadGame={this.props.loadGame}/> 
         </div>
       </div>
     );
