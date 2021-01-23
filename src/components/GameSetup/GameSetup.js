@@ -21,7 +21,6 @@ import "./GameSetup.scss";
 class GameSetup extends Component {
   constructor(props) {
     super(props);
-    console.log('bbbbbbbbbbbbbbb')
     this.state = {
       dropdownOpen: false,
       dropDownValue: "Easy",
@@ -43,7 +42,7 @@ class GameSetup extends Component {
     return (
       <div style={{ paddingTop: 50 }}>
         <Row>
-          <Col xs="4">
+          <Col>
             <span>
               Width:{" "}
               <input
@@ -53,8 +52,6 @@ class GameSetup extends Component {
                 value={this.props.width}
               />{" "}
             </span>
-          </Col>
-          <Col xs="4">
             <span>
               Height:{" "}
               <input
@@ -64,8 +61,6 @@ class GameSetup extends Component {
                 readOnly="readOnly"
               />{" "}
             </span>
-          </Col>
-          <Col xs="4">
             <span>
               Mines:{" "}
               <input
@@ -87,7 +82,7 @@ class GameSetup extends Component {
               isOpen={this.state.dropdownOpen}
               toggle={() => this.toggle()}
             >
-              <DropdownToggle caret>
+              <DropdownToggle caret >
                 Difficulty: {this.props.dropDownValue}
               </DropdownToggle>
               <DropdownMenu>

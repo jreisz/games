@@ -18,7 +18,6 @@ import {toMMddyyyyhhmmss,ssdiffMMddyyyyhhmmss} from '../../../../../lib/santex/u
 
 class Board extends React.Component {
   constructor(props) {
-    console.log('cccrete')
     super(props);
     this.state = {
       shiftIsPressed: false,
@@ -34,7 +33,6 @@ class Board extends React.Component {
   }
 
   componentDidMount() {
-    console.log('rete')
     this.buildBoard();
 
     window.addEventListener("keyup", this.keyUnpressed.bind(this));
