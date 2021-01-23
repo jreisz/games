@@ -1,33 +1,32 @@
 import React, { Component } from "react";
 import { Table, Row, Col, Container } from "reactstrap";
 import { connect } from "react-redux";
-import {toMMddyyyyhhmm,toss} from '../../../lib/santex/utils/dateFormatter';
+import { toMMddyyyyhhmm } from "../../../lib/santex/utils/dateFormatter";
 
 class FinishedGames extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
-
-    const records = this.props.savedGames.filter(game => game.endTime != null).sort((a, b) => a.SetUp.difficultyId - b.SetUp.difficultyId || a.totalSpentTime - b.totalSpentTime )
-    
-    .map((d) => (
-      <tr key={d.startTime}>
-        <th scope="row">{toMMddyyyyhhmm(d.startTime)}</th>
-        <td>{toMMddyyyyhhmm(d.endTime)}</td>
-        <td>{d.SetUp.difficulty}</td>
-        <td>{d.totalSpentTime + ' secs'}</td>
-        <td>{d.status}</td>
-      </tr>
-    ));
+    const records = this.props.savedGames
+      .filter((game) => game.endTime != null)
+      .sort(
+        (a, b) =>
+          a.SetUp.difficultyId - b.SetUp.difficultyId ||
+          a.totalSpentTime - b.totalSpentTime
+      )
+      .map((d) => (
+        <tr key={d.startTime}>
+          <th scope="row">{toMMddyyyyhhmm(d.startTime)}</th>
+          <td>{toMMddyyyyhhmm(d.endTime)}</td>
+          <td>{d.SetUp.difficulty}</td>
+          <td>{d.totalSpentTime + " secs"}</td>
+          <td>{d.status}</td>
+        </tr>
+      ));
 
     return (
-      <div>
         <Container>
           <Row>
             <Col>
-              <Table style={{marginTop:'40px'}}>
+              <Table style={{ marginTop: "40px" }}>
                 <thead>
                   <tr>
                     <th>Start Time</th>
@@ -42,7 +41,6 @@ class FinishedGames extends Component {
             </Col>
           </Row>
         </Container>
-      </div>
     );
   }
 }

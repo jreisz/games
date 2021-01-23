@@ -33,11 +33,9 @@ class GameSetup extends Component {
   changeValue(e) {
     this.props.setDifficulty(e.currentTarget.textContent,e.currentTarget.id);
   }
-
   toggle() {
     this.setState({ dropdownOpen: !this.state.dropdownOpen });
   }
-
   render() {
     return (
       <div style={{ paddingTop: 50 }}>

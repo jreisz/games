@@ -1,2 +1,37 @@
 
+Test Cases
+----------
+----------
 
+App:
+----------
+*Check Routing URL
+
+
+Finished Games:
+----------
+* No Records
+* Has Records
+* Refresh Page Persisting Records
+* Columns Format MM-DD-YYYY hh:mm (12hr format) and Won/Lost
+* Check Order Ascending
+
+Game Setup:
+----------
+*Check Default Difficulty
+*Check Difficulty Changed
+
+Header:
+----------
+*Check Remaining Flags
+*Check New Game Initialization
+*Check Save/Load Functionality
+
+Board:
+----------
+* Creates the Board
+* Non Bomb Clicked
+* Flag Added
+* Flag Removed
+* Win Game
+* Bomb Clicked (Loose Game)

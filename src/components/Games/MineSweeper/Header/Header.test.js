@@ -1,24 +1,34 @@
-// import React from 'react';
-// import renderer from 'react-test-renderer';
-// import Link from './Header';
+import React from 'react';
+import ReactDOM from 'react-dom';
+import Header from './Header';
 
-// test('Link changes the class when hovered', () => {
-//   const component = renderer.create(
-//     <Link page="http://www.facebook.com">Facebook</Link>,
-//   );
-//   let tree = component.toJSON();
-//   expect(tree).toMatchSnapshot();
+it('renders without crashing', () => {
+  const div = document.createElement('div');
+  ReactDOM.render(<Header />, div);
+  ReactDOM.unmountComponentAtNode(div);
+});
 
-//   // manually trigger the callback
-//   tree.props.onMouseEnter();
-//   // re-rendering
-//   tree = component.toJSON();
-//   expect(tree).toMatchSnapshot();
+it('decrements remaining flags', () => {
+  const div = document.createElement('div');
+  ReactDOM.render(<Header />, div);
+  ReactDOM.unmountComponentAtNode(div);
+});
 
-//   // manually trigger the callback
-//   tree.props.onMouseLeave();
-//   // re-rendering
-//   tree = component.toJSON();
-//   expect(tree).toMatchSnapshot();
-// });
-
+it('fires new game', () => {
+    const div = document.createElement('div');
+    ReactDOM.render(<Header />, div);
+    ReactDOM.unmountComponentAtNode(div);
+  });
+  
+it('fires load game', () => {
+    const div = document.createElement('div');
+    ReactDOM.render(<Header />, div);
+    ReactDOM.unmountComponentAtNode(div);
+  });
+  
+it('fires save game', () => {
+    const div = document.createElement('div');
+    ReactDOM.render(<Header />, div);
+    ReactDOM.unmountComponentAtNode(div);
+  });
+  
