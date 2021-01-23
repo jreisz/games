@@ -10,7 +10,9 @@ class FinishedGames extends Component {
 
   render() {
 
-    const records = this.props.savedGames.filter(game => game.endTime != null).sort((a, b) => b.SetUp.difficultyId - a.SetUp.difficultyId || a.totalSpentTime - b.totalSpentTime ).map((d) => (
+    const records = this.props.savedGames.filter(game => game.endTime != null).sort((a, b) => a.SetUp.difficultyId - b.SetUp.difficultyId || a.totalSpentTime - b.totalSpentTime )
+    
+    .map((d) => (
       <tr key={d.startTime}>
         <th scope="row">{toMMddyyyyhhmm(d.startTime)}</th>
         <td>{toMMddyyyyhhmm(d.endTime)}</td>

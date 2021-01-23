@@ -14,10 +14,11 @@ import {
   editSavedGame,
 } from "../../../../store/SavedGames/actions";
 import { setNewGame } from "../../../../store/SetUp/actions";
-import {toMMddyyyyhhmm, toMMddyyyyhhmmss,ssdiffMMddyyyyhhmmss,toss} from '../../../../../lib/santex/utils/dateFormatter';
+import {toMMddyyyyhhmmss,ssdiffMMddyyyyhhmmss} from '../../../../../lib/santex/utils/dateFormatter';
 
 class Board extends React.Component {
   constructor(props) {
+    console.log('cccrete')
     super(props);
     this.state = {
       shiftIsPressed: false,
@@ -33,6 +34,7 @@ class Board extends React.Component {
   }
 
   componentDidMount() {
+    console.log('rete')
     this.buildBoard();
 
     window.addEventListener("keyup", this.keyUnpressed.bind(this));
@@ -403,7 +405,7 @@ const mapStateToProps = (state) => {
     boardCells: state.MineSweeper.boardCells,
     gameId: state.MineSweeper.gameId,
     difficulty: state.Setup.difficulty,
-    difficultyId: state.Setup.difficulty,
+    difficultyId: state.Setup.difficultyId,
     startTime: state.MineSweeper.startTime,
     totalSpentTime: state.MineSweeper.totalSpentTime,
     status: state.MineSweeper.status,

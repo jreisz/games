@@ -7,6 +7,7 @@ const initialState = {
   newGame: true,
   loadGame:false,
   difficulty: DIFFICULTY.KINDER,
+  difficultyId: 0,
 };
 
 const Presets = (state = initialState, action) => {
@@ -15,6 +16,7 @@ const Presets = (state = initialState, action) => {
       return {
         ...state,
         difficulty: action.payload.difficulty,
+        difficultyId: parseInt(action.payload.difficultyId),
         width:
           (action.payload.difficulty == DIFFICULTY.EASY
             ? 10

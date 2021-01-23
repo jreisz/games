@@ -21,6 +21,7 @@ import "./GameSetup.scss";
 class GameSetup extends Component {
   constructor(props) {
     super(props);
+    console.log('bbbbbbbbbbbbbbb')
     this.state = {
       dropdownOpen: false,
       dropDownValue: "Easy",
@@ -31,7 +32,7 @@ class GameSetup extends Component {
     this.changeValue = this.changeValue.bind(this);
   }
   changeValue(e) {
-    this.props.setDifficulty(e.currentTarget.textContent);
+    this.props.setDifficulty(e.currentTarget.textContent,e.currentTarget.id);
   }
 
   toggle() {
@@ -90,10 +91,10 @@ class GameSetup extends Component {
                 Difficulty: {this.props.dropDownValue}
               </DropdownToggle>
               <DropdownMenu>
-                <DropdownItem onClick={this.changeValue}>Kinder</DropdownItem>
-                <DropdownItem onClick={this.changeValue}>Easy</DropdownItem>
-                <DropdownItem onClick={this.changeValue}>Medium</DropdownItem>
-                <DropdownItem onClick={this.changeValue}>Hard</DropdownItem>
+                <DropdownItem id="0" onClick={this.changeValue}>Kinder</DropdownItem>
+                <DropdownItem id="1" onClick={this.changeValue}>Easy</DropdownItem>
+                <DropdownItem id="2" onClick={this.changeValue}>Medium</DropdownItem>
+                <DropdownItem id="3" onClick={this.changeValue}>Hard</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </Col>

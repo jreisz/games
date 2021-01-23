@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Navbar from '../../../lib/santex/components/DefaultNavBar/DefaultNavBar';
-import {BrowserRouter,Route,Switch} from 'react-router-dom';
+import {BrowserRouter} from 'react-router-dom';
+import CacheRoute, { CacheSwitch } from 'react-router-cache-route'
 import GameSetup from '../GameSetup/GameSetup';
 import GameBoard from '../GameBoard/GameBoard';
 import FinishedGames from '../FinishedGames/FinishedGames';
@@ -12,11 +13,11 @@ class App extends Component {
       <BrowserRouter basename="/">
       <div className="App">
         <Navbar/>
-        <Switch>
-          <Route path="/setup" component={GameSetup}/>
-          <Route path="/board" component={GameBoard}/>
-          <Route path="/finishedGames" component={FinishedGames}/>
-        </Switch>
+        <CacheSwitch>
+          <CacheRoute path="/setup" component={GameSetup}/>
+          <CacheRoute path="/board" component={GameBoard}/>
+          <CacheRoute path="/finishedGames" component={FinishedGames}/>
+        </CacheSwitch>
       </div>
       </BrowserRouter>
     );
