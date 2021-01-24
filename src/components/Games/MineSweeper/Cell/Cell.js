@@ -14,15 +14,16 @@ class Cell extends React.Component {
     this.state = {
       revealdCell: false,
       isGameOverCell: false,
-      isShiftPressed: this.props.isShiftPressed,
-      cellWidth: defualtCellSize, 
-      cellHeight: defualtCellSize
+      isFlagged: this.props.isFlagged,
+      cellWidth: defualtCellSize,
+      cellHeight: defualtCellSize,
     };
     this.clickOnCell = this.clickOnCell.bind(this);
+    this.rightClick = this.rightClick.bind(this);
     this.numberColor = this.numberColor.bind(this);
   }
   componentDidMount() {
-    this.setState({ isShiftPressed: this.props.isShiftPressed });
+    this.setState({ isFlagged: this.props.isFlagged });
   }
   showCellSymbol() {
     if (this.props.data.flag) {
@@ -40,10 +41,9 @@ class Cell extends React.Component {
   }
   numberColor() {
     let number, color;
-    if(this.props.data.flag){
-      return 'Black'
-    }
-    else if (this.props.data.value >= 1) {
+    if (this.props.data.flag) {
+      return "Black";
+    } else if (this.props.data.value >= 1) {
       number = parseInt(this.props.data.value);
     }
     switch (number) {
@@ -68,10 +68,12 @@ class Cell extends React.Component {
     }
     return color;
   }
+  rightClick(e) {
+    e.preventDefault();
+    this.props.flagClicked(this.props.data);
+  }
   clickOnCell() {
-    if (this.props.isShiftPressed) {
-      this.props.flagClicked(this.props.data);
-    } else if (this.props.data.mine) {
+    if (this.props.data.mine) {
       this.props.mineClicked(this.props.data);
     } else if (!this.props.data.flag) {
       this.props.revealCells(this.props.data);
@@ -95,8 +97,15 @@ class Cell extends React.Component {
           height: `${this.state.cellHeight}`,
         }}
         onClick={this.clickOnCell}
+        onContextMenu={this.rightClick}
       >
-        <span style={{ color: this.numberColor(), fontWeight:'bolder' ,fontSize:'1.25rem'}}>
+        <span
+          style={{
+            color: this.numberColor(),
+            fontWeight: "bolder",
+            fontSize: "1.25rem",
+          }}
+        >
           {this.showCellSymbol()}
         </span>
       </td>

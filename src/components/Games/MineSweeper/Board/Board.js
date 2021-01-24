@@ -14,14 +14,15 @@ import {
   editSavedGame,
 } from "../../../../store/SavedGames/actions";
 import { setNewGame } from "../../../../store/SetUp/actions";
-import {toMMddyyyyhhmmss,ssdiffMMddyyyyhhmmss} from '../../../../../lib/santex/utils/dateFormatter';
+import {
+  toMMddyyyyhhmmss,
+  ssdiffMMddyyyyhhmmss,
+} from "../../../../../lib/santex/utils/dateFormatter";
 
 class Board extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      shiftIsPressed: false,
-      flaggedCount: 0,
       containerHeight: `${this.getContainerHeight()}`,
       containerWidth: `${this.getContainerWidth()}`,
     };
@@ -34,21 +35,6 @@ class Board extends React.Component {
 
   componentDidMount() {
     this.buildBoard();
-
-    window.addEventListener("keyup", this.keyUnpressed.bind(this));
-    window.addEventListener("keydown", this.keyPressed.bind(this));
-  }
-
-  keyPressed(key) {
-    if (key.code === "ShiftLeft") {
-      this.setState({ shiftIsPressed: true });
-    }
-  }
-
-  keyUnpressed(key) {
-    if (key.code === "ShiftLeft") {
-      this.setState({ shiftIsPressed: false });
-    }
   }
 
   getContainerHeight() {
@@ -141,16 +127,18 @@ class Board extends React.Component {
     });
   }
 
-  flagClicked(cellData) {
+  async flagClicked(cellData) {
+    
     if (this.props.remainingFlags === 0 && !cellData.flag) {
       alert("You dont have any more flags!");
     } else {
-      const isCellFlagged = this.updateBoardWithFlag(cellData);
+      const isCellFlagged = await this.updateBoardWithFlag(cellData);
+      debugger;
       let flaggedCells = isCellFlagged
         ? this.props.remainingFlags - 1
         : this.props.remainingFlags + 1;
 
-      this.props.setRemainingFlags(flaggedCells);
+      await this.props.setRemainingFlags(flaggedCells);
     }
   }
 
@@ -265,40 +253,47 @@ class Board extends React.Component {
       cellData.location.height
     ];
 
-    setTimeout( async function() {
-      let game = this.props.savedGames.find(
-        (game) => game.gameId === this.props.gameId
-      );
-      if (game !==undefined) {
-        game.status = "Lost";
-        game.endTime = toMMddyyyyhhmmss(new Date());
-        game.totalSpentTime= ssdiffMMddyyyyhhmmss( game.endTime - game.startTime),
-          
-        this.props.editSavedGame(game);
-      } else {
-        game = {
-          SetUp: {
-            difficulty: this.props.difficulty,
-            difficultyId: this.props.difficultyId,
-          },
-          MineSweeper: {
-            remainingFlags: this.props.remainingFlags,
-            remainingNonBombCells: this.props.remainingNonBombCells,
-            gameStatus: this.props.gameStatus,
-            boardCells: this.props.boardCells,
-          },
-          startTime: this.props.startTime,
-          endTime: toMMddyyyyhhmmss(new Date()),
-          totalSpentTime: ssdiffMMddyyyyhhmmss(toMMddyyyyhhmmss(new Date()),this.props.startTime),
-          status: "Lost",
-          gameId: this.props.gameId,
-        };
-        await this.props.addSavedGame(game);
-        await this.props.setGameId();
-      }
+    setTimeout(
+      async function () {
+        let game = this.props.savedGames.find(
+          (game) => game.gameId === this.props.gameId
+        );
+        if (game !== undefined) {
+          game.status = "Lost";
+          game.endTime = toMMddyyyyhhmmss(new Date());
+          (game.totalSpentTime = ssdiffMMddyyyyhhmmss(
+            game.endTime - game.startTime
+          )),
+            this.props.editSavedGame(game);
+        } else {
+          game = {
+            SetUp: {
+              difficulty: this.props.difficulty,
+              difficultyId: this.props.difficultyId,
+            },
+            MineSweeper: {
+              remainingFlags: this.props.remainingFlags,
+              remainingNonBombCells: this.props.remainingNonBombCells,
+              gameStatus: this.props.gameStatus,
+              boardCells: this.props.boardCells,
+            },
+            startTime: this.props.startTime,
+            endTime: toMMddyyyyhhmmss(new Date()),
+            totalSpentTime: ssdiffMMddyyyyhhmmss(
+              toMMddyyyyhhmmss(new Date()),
+              this.props.startTime
+            ),
+            status: "Lost",
+            gameId: this.props.gameId,
+          };
+          await this.props.addSavedGame(game);
+          await this.props.setGameId();
+        }
 
-      alert("You clicked on a Mine! :(");
-    }.bind(this), 100);
+        alert("You clicked on a Mine! :(");
+      }.bind(this),
+      100
+    );
     this.revealCells();
     this.props.setGameStatus("😫");
 
@@ -316,41 +311,49 @@ class Board extends React.Component {
         }
       }
     }
-    setTimeout(async function() {
-      let game = this.props.savedGames.find(
-        (game) => game.gameId === this.props.gameId
-      );
-      if (game !==undefined) {
-        game.status = "Won";
-        game.endTime = toMMddyyyyhhmmss(new Date());
-        game.totalSpentTime= ssdiffMMddyyyyhhmmss( toMMddyyyyhhmmss( new Date()) - game.startTime),
-        await this.props.editSavedGame(game);
-        await this.props.setGameStatus("😃");
-        await this.props.setGameId();
-      } else {
-        game = {
-          SetUp: {
-            difficulty: this.props.difficulty,
-            difficultyId: this.props.difficultyId,
-          },
-          MineSweeper: {
-            remainingFlags: this.props.remainingFlags,
-            remainingNonBombCells: this.props.remainingNonBombCells,
-            gameStatus: this.props.gameStatus,
-            boardCells: this.props.boardCells,
-          },
-          startTime: this.props.startTime,
-          endTime: toMMddyyyyhhmmss(new Date()),
-          totalSpentTime:ssdiffMMddyyyyhhmmss( toMMddyyyyhhmmss( new Date()) , this.props.startTime),
-          status: "Won",
-          gameId: this.props.gameId,
-        };
-        await this.props.setGameId();
-        await this.props.setGameStatus("😃");
-        await this.props.addSavedGame(game);
-      }
-      alert("You win!");
-    }.bind(this), 100);
+    setTimeout(
+      async function () {
+        let game = this.props.savedGames.find(
+          (game) => game.gameId === this.props.gameId
+        );
+        if (game !== undefined) {
+          game.status = "Won";
+          game.endTime = toMMddyyyyhhmmss(new Date());
+          (game.totalSpentTime = ssdiffMMddyyyyhhmmss(
+            toMMddyyyyhhmmss(new Date()) - game.startTime
+          )),
+            await this.props.editSavedGame(game);
+          await this.props.setGameStatus("😃");
+          await this.props.setGameId();
+        } else {
+          game = {
+            SetUp: {
+              difficulty: this.props.difficulty,
+              difficultyId: this.props.difficultyId,
+            },
+            MineSweeper: {
+              remainingFlags: this.props.remainingFlags,
+              remainingNonBombCells: this.props.remainingNonBombCells,
+              gameStatus: this.props.gameStatus,
+              boardCells: this.props.boardCells,
+            },
+            startTime: this.props.startTime,
+            endTime: toMMddyyyyhhmmss(new Date()),
+            totalSpentTime: ssdiffMMddyyyyhhmmss(
+              toMMddyyyyhhmmss(new Date()),
+              this.props.startTime
+            ),
+            status: "Won",
+            gameId: this.props.gameId,
+          };
+          await this.props.setGameId();
+          await this.props.setGameStatus("😃");
+          await this.props.addSavedGame(game);
+        }
+        alert("You win!");
+      }.bind(this),
+      100
+    );
   }
 
   render() {
@@ -376,7 +379,6 @@ class Board extends React.Component {
                       numOfHeightCells: this.props.boardHeight,
                       numOfWidthCells: this.props.boardWidth,
                     }}
-                    isShiftPressed={this.state.shiftIsPressed}
                     flagClicked={this.flagClicked}
                     revealCells={this.revealCells}
                     mineClicked={this.mineClicked}
@@ -419,5 +421,5 @@ export default connect(mapStateToProps, {
   addSavedGame,
   editSavedGame,
   setStartTime,
-  setGameId
+  setGameId,
 })(Board);

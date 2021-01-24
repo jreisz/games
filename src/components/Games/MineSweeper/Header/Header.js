@@ -60,7 +60,7 @@ class Header extends React.Component {
             <br />
             If you click on a square e containing a bomb, you lose. <br /> If
             you manage to click all the squares (without clicking on any bombs)
-            you win. <br /> Mark with flags the bombs (shift+click)
+            you win. <br /> Mark with flags the bombs (right click)
           </div>
         </Jumbotron>
 
