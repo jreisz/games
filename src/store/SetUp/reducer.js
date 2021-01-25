@@ -23,7 +23,7 @@ const Presets = (state = initialState, action) => {
             : (action.payload.difficulty == DIFFICULTY.MEDIUM
             ? 15
             : (action.payload.difficulty == DIFFICULTY.HARD
-            ? 15
+            ? 19 
             : 4))),
         height:
           (action.payload.difficulty == DIFFICULTY.EASY
@@ -31,13 +31,13 @@ const Presets = (state = initialState, action) => {
             : (action.payload.difficulty == DIFFICULTY.MEDIUM
             ? 15
             : (action.payload.difficulty == DIFFICULTY.HARD
-              ? 30
+              ? 19
               : 4))),
         mines:
           (action.payload.difficulty == DIFFICULTY.EASY
             ? 10
             : (action.payload.difficulty == DIFFICULTY.MEDIUM
-            ? 40
+            ? 20
             : (action.payload.difficulty == DIFFICULTY.HARD
               ? 99
               : 1))),
