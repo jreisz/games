@@ -4,3 +4,8 @@ export const DIFFICULTY = {
   MEDIUM: "Medium",
   HARD: "Hard",
 };
+export const STATUS = {
+  WON: "Won",
+  LOST: "Lost",
+  SAVED: "Saved"
+};

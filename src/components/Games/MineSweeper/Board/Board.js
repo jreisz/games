@@ -13,11 +13,13 @@ import {
   addSavedGame,
   editSavedGame,
 } from "../../../../store/SavedGames/actions";
-import { setNewGame } from "../../../../store/SetUp/actions";
+import { setNewGame,setLoadGame } from "../../../../store/SetUp/actions";
 import {
   toMMddyyyyhhmmss,
   ssdiffMMddyyyyhhmmss,
 } from "../../../../../lib/santex/utils/dateFormatter";
+import {STATUS } from '../../../../constants';
+import {deepCopy } from '../../../../../lib/santex/utils/deepCopy'
 
 class Board extends React.Component {
   constructor(props) {
@@ -68,11 +70,12 @@ class Board extends React.Component {
     );
     this.props.setNewGame(false);
   }
-  loadBoard(boardCells) {
-    this.props.setBoardCells(boardCells);
-    this.props.setRemainingFlags(this.props.mines);
-    this.props.setRemainingNonBombCells();
-    this.props.loadGame(false);
+  async loadBoard() {
+    let game = this.props.savedGames.slice().reverse().find(game => game.status === STATUS.SAVED);
+    await this.props.setBoardCells(deepCopy(game.savedMineSweeper.savedBoardCells));
+    await this.props.setRemainingFlags(game.savedMineSweeper.remainingFlags);
+    await this.props.setRemainingNonBombCells(game.savedMineSweeper.remainingNonBombCells);
+    await this.props.setLoadGame(false);
   }
   createBoard() {
     let boardCells = [];
@@ -128,12 +131,10 @@ class Board extends React.Component {
   }
 
   async flagClicked(cellData) {
-    
     if (this.props.remainingFlags === 0 && !cellData.flag) {
       alert("You dont have any more flags!");
     } else {
       const isCellFlagged = await this.updateBoardWithFlag(cellData);
-      debugger;
       let flaggedCells = isCellFlagged
         ? this.props.remainingFlags - 1
         : this.props.remainingFlags + 1;
@@ -144,11 +145,9 @@ class Board extends React.Component {
 
   async updateBoardWithFlag(cellData) {
     const isFlagged = !this.props.boardCells[cellData.location.width][
-      cellData.location.height
-    ].flag;
+      cellData.location.height].flag;
     let updatedCellBoard = this.props.boardCells.map((arr) => arr.slice());
-    updatedCellBoard[cellData.location.width][
-      cellData.location.height
+    updatedCellBoard[cellData.location.width][cellData.location.height
     ].flag = isFlagged;
     await this.props.setBoardCells(updatedCellBoard);
     return isFlagged;
@@ -161,28 +160,30 @@ class Board extends React.Component {
     updatedCellBoard[cellData.location.width][
       cellData.location.height
     ].flag = isFlagged;
-    this.setState({ boardCells: updatedCellBoard });
+    this.props.updatedCellBoard(updatedCellBoard );
     return isFlagged;
   }
 
   componentDidUpdate() {
     if (this.props.newGame) {
       this.buildBoard();
+      this.props.setGameId();
     } else if (this.props.loadGame) {
       this.loadBoard();
+      this.props.setLoadGame(false);
     }
   }
 
   async revealCells(clickedCell) {
-    var newBoardCells = this.props.boardCells.map((arr) => arr.slice());
-
+    
+    let newBoardCells = this.props.boardCells.map((arr) => arr.slice());
     if (clickedCell == undefined) {
       for (var i = 0; i < newBoardCells.length; i++) {
         for (var j = 0; j < newBoardCells[i].length; j++) {
           newBoardCells[i][j].reveald = true;
         }
       }
-      this.setState({ boardCells: newBoardCells });
+      await this.props.setBoardCells( newBoardCells);
       return;
     }
     if (clickedCell.value > 0) {
@@ -191,9 +192,9 @@ class Board extends React.Component {
       await this.props.setRemainingNonBombCells(
         this.props.remainingNonBombCells - 1
       );
-
+      
       if (this.props.remainingNonBombCells === 0) {
-        this.handleWin();
+        await this.handleWin();
       }
     } else {
       this.runOnNeighbors(
@@ -203,7 +204,7 @@ class Board extends React.Component {
         false
       );
     }
-    this.setState({ boardCells: newBoardCells });
+    await this.props.setBoardCells( newBoardCells );
   }
 
   async runOnNeighbors(cellWidth, cellHeight, newBoardCells, isFillMinesFlow) {
@@ -214,10 +215,11 @@ class Board extends React.Component {
       let currentCell = neighborsToCheck.pop();
       cellWidth = currentCell.location.width;
       cellHeight = currentCell.location.height;
-
+      
       for (var i = cellWidth - 1; i <= cellWidth + 1; i++) {
         for (var j = cellHeight - 1; j <= cellHeight + 1; j++) {
           var neighbor = newBoardCells[i] && newBoardCells[i][j];
+           
           if (isFillMinesFlow && neighbor) {
             neighbor.value++;
           } else if (
@@ -227,6 +229,7 @@ class Board extends React.Component {
             !neighbor.flag
           ) {
             neighbor.reveald = true;
+            
             await this.props.setRemainingNonBombCells(
               this.props.remainingNonBombCells - 1
             );
@@ -355,7 +358,9 @@ class Board extends React.Component {
       100
     );
   }
-
+  componentDidCatch(error, errorInfo) {
+    //console.log('error x')
+  }
   render() {
     return (
       <div id="board-root">
@@ -367,7 +372,9 @@ class Board extends React.Component {
           }}
         >
           <tbody>
-            {this.props.boardCells.map((row, rowIndex) => (
+            {
+            
+            this.props.boardCells.map((row, rowIndex) => (
               <tr key={rowIndex}>
                 {row.map((cell, cellIndex) => (
                   <Cell
@@ -383,9 +390,12 @@ class Board extends React.Component {
                     revealCells={this.revealCells}
                     mineClicked={this.mineClicked}
                   />
-                ))}
+                ))
+                }
               </tr>
-            ))}
+            ))
+            
+            }
           </tbody>
         </table>
       </div>
@@ -402,7 +412,6 @@ const mapStateToProps = (state) => {
     gameStatus: state.MineSweeper.gameStatus,
     boardCells: state.MineSweeper.boardCells,
     savedGames: state.SavedGames,
-    boardCells: state.MineSweeper.boardCells,
     gameId: state.MineSweeper.gameId,
     difficulty: state.Setup.difficulty,
     difficultyId: state.Setup.difficultyId,
@@ -422,4 +431,5 @@ export default connect(mapStateToProps, {
   editSavedGame,
   setStartTime,
   setGameId,
+  setLoadGame,
 })(Board);

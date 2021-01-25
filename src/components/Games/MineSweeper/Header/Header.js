@@ -1,12 +1,16 @@
 import React from "react";
 import { Jumbotron, Button } from "reactstrap";
 import { connect } from "react-redux";
-import { setNewGame } from "../../../../store/SetUp/actions";
+import { setNewGame,setLoadGame } from "../../../../store/SetUp/actions";
 import { setGameStatus } from "../../../../store/MineSweeper/actions";
+import {addSavedGame,editSavedGame} from "../../../../store/SavedGames/actions";
+import {STATUS } from '../../../../constants';
 import {
-  addSavedGame,
-  editSavedGame,
-} from "../../../../store/SavedGames/actions";
+  toMMddyyyyhhmmss,
+  ssdiffMMddyyyyhhmmss,
+} from "../../../../../lib/santex/utils/dateFormatter";
+import {deepCopy} from '../../../../../lib/santex/utils/deepCopy'
+
 //import './Header.scss'
 
 class Header extends React.Component {
@@ -56,7 +60,7 @@ class Header extends React.Component {
     this.props.setNewGame(true);
   }
   loadGame() {
-    this.props.loadGame(true);
+    this.props.setLoadGame(true);
   }
   saveGame() {
     const game = {
@@ -64,16 +68,19 @@ class Header extends React.Component {
         difficulty: this.props.difficulty,
         difficultyId: this.props.difficultyId,
       },
-      MineSweeper: {
+      savedMineSweeper: {
         remainingFlags: this.props.remainingFlags,
         remainingNonBombCells: this.props.remainingNonBombCells,
         gameStatus: this.props.gameStatus,
-        boardCells: this.props.boardCells,
+        savedBoardCells: deepCopy(this.props.boardCells),
       },
       startTime: this.props.startTime,
       endTime: null,
-      totalSpentTime: this.props.totalSpentTime,
-      status: this.props.status,
+      totalSpentTime: ssdiffMMddyyyyhhmmss(
+        toMMddyyyyhhmmss(new Date()),
+        this.props.startTime
+      ),
+      status: STATUS.SAVED,
       gameId: this.props.gameId,
     };
 
@@ -81,9 +88,9 @@ class Header extends React.Component {
       this.props.savedGames.find((game) => game.gameId === this.props.gameId) ==
       null
     ) {
-      this.props.addSavedGame(game);
+      this.props.addSavedGame({...game});
     } else {
-      this.props.editSavedGame(game);
+      this.props.editSavedGame({...game});
     }
   }
   componentDidMount() {
@@ -153,4 +160,5 @@ export default connect(mapStateToProps, {
   setGameStatus,
   addSavedGame,
   editSavedGame,
+  setLoadGame,
 })(Header);

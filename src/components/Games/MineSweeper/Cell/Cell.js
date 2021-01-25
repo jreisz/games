@@ -14,16 +14,12 @@ class Cell extends React.Component {
     this.state = {
       revealdCell: false,
       isGameOverCell: false,
-      isFlagged: this.props.isFlagged,
       cellWidth: defualtCellSize,
       cellHeight: defualtCellSize,
     };
     this.clickOnCell = this.clickOnCell.bind(this);
     this.rightClick = this.rightClick.bind(this);
     this.numberColor = this.numberColor.bind(this);
-  }
-  componentDidMount() {
-    this.setState({ isFlagged: this.props.isFlagged });
   }
   showCellSymbol() {
     if (this.props.data.flag) {
