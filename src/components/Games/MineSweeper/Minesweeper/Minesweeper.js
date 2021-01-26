@@ -3,7 +3,7 @@ import Board from "../Board/Board.js";
 import Header from "../Header/Header.js";
 import { connect } from "react-redux";
 import "./Minesweeper.scss";
-
+ 
 class MineSweeper extends React.Component {
   render() {
     return (
