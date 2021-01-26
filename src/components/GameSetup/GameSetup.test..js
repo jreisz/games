@@ -8,14 +8,14 @@ it('renders without crashing', () => {
   ReactDOM.unmountComponentAtNode(div);
 });
 
-it('checks default difficulty', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<GameSetup />, div);
-  ReactDOM.unmountComponentAtNode(div);
-});
+// it('checks default difficulty', () => {
+//   const div = document.createElement('div');
+//   ReactDOM.render(<GameSetup />, div);
+//   ReactDOM.unmountComponentAtNode(div);
+// });
 
-it('changes difficulty to Hard', () => {
-  const div = document.createElement('div');
-  ReactDOM.render(<GameSetup />, div);
-  ReactDOM.unmountComponentAtNode(div);
-}); 
+// it('changes difficulty to Hard', () => {
+//   const div = document.createElement('div');
+//   ReactDOM.render(<GameSetup />, div);
+//   ReactDOM.unmountComponentAtNode(div);
+// }); 
