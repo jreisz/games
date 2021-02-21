@@ -13,6 +13,9 @@ const SavedGames = (state = initialState, action) => {
 
       return state;
     }
+    case "CLEAR_GAMES": {
+      return [];
+    }
     default: {
       return state;
     }

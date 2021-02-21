@@ -1,0 +1,128 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Game Setup should render with given state from Redux store 1`] = `
+<div
+  style={
+    Object {
+      "paddingTop": 50,
+    }
+  }
+>
+  <div
+    className="row"
+  >
+    <div
+      className="col"
+    >
+      <span>
+        Width:
+         
+        <input
+          className="__gameSetup_input-readonly"
+          id="widthInput"
+          readOnly="readOnly"
+          value={4}
+        />
+         
+      </span>
+      <span>
+        Height:
+         
+        <input
+          className="__gameSetup_input-readonly"
+          id="heightInput"
+          readOnly="readOnly"
+          value={4}
+        />
+         
+      </span>
+      <span>
+        Mines:
+         
+        <input
+          className="__gameSetup_input-readonly"
+          id="minesInput"
+          readOnly="readOnly"
+          value={1}
+        />
+      </span>
+    </div>
+  </div>
+  <div
+    className="row"
+  >
+    <br />
+  </div>
+  <div
+    className="row"
+  >
+    <div
+      className="col-12"
+    >
+      <div
+        className="dropdown"
+        onKeyDown={[Function]}
+      >
+        <button
+          aria-expanded={false}
+          aria-haspopup={true}
+          aria-label={null}
+          className="dropdown-toggle btn btn-secondary"
+          onClick={[Function]}
+          type="button"
+        >
+          Difficulty: 
+          Kinder
+        </button>
+        <div
+          aria-hidden={true}
+          className="dropdown-menu"
+          role="menu"
+          tabIndex="-1"
+        >
+          <button
+            className="dropdown-item"
+            id="0"
+            onClick={[Function]}
+            role="menuitem"
+            tabIndex="0"
+            type="button"
+          >
+            Kinder
+          </button>
+          <button
+            className="dropdown-item"
+            id="1"
+            onClick={[Function]}
+            role="menuitem"
+            tabIndex="0"
+            type="button"
+          >
+            Easy
+          </button>
+          <button
+            className="dropdown-item"
+            id="2"
+            onClick={[Function]}
+            role="menuitem"
+            tabIndex="0"
+            type="button"
+          >
+            Medium
+          </button>
+          <button
+            className="dropdown-item"
+            id="3"
+            onClick={[Function]}
+            role="menuitem"
+            tabIndex="0"
+            type="button"
+          >
+            Hard
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+`;

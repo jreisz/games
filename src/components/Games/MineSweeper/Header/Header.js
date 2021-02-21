@@ -11,7 +11,7 @@ import {
 } from "../../../../../lib/santex/utils/dateFormatter";
 import {deepCopy} from '../../../../../lib/santex/utils/deepCopy'
 
-//import './Header.scss'
+import './Header.scss'
 
 class Header extends React.Component {
   constructor(props) {
@@ -33,30 +33,30 @@ class Header extends React.Component {
     }
   }
 
-  dragElement(element, direction) {
-    var md;
-    const first = document.getElementById("first");
-    const second = document.getElementById("second");
+  // dragElement(element, direction) {
+  //   var md;
+  //   const first = document.getElementById("first");
+  //   const second = document.getElementById("second");
   
-    element.onmousedown = onMouseDown;
+  //   element.onmousedown = onMouseDown;
   
-    function onMouseDown(e) {
-      md = {
-        e,
-        offsetLeft: element.offsetLeft,
-        offsetTop: element.offsetTop,
-        firstHeight: first.offsetHeight,
-        secondHeight: second.offsetHeight,
-      };
+  //   function onMouseDown(e) {
+  //     md = {
+  //       e,
+  //       offsetLeft: element.offsetLeft,
+  //       offsetTop: element.offsetTop,
+  //       firstHeight: first.offsetHeight,
+  //       secondHeight: second.offsetHeight,
+  //     };
   
-      document.onmousemove = onMouseMove;
-      document.onmouseup = () => {
-        document.onmousemove = document.onmouseup = null;
-      };
-    }
-  }
+  //     document.onmousemove = onMouseMove;
+  //     document.onmouseup = () => {
+  //       document.onmousemove = document.onmouseup = null;
+  //     };
+  //   }
+  // }
   setNewGame() {
-    this.props.setGameStatus("😃");
+    this.props.set("😃");
     this.props.setNewGame(true);
   }
   loadGame() {
@@ -93,9 +93,9 @@ class Header extends React.Component {
       this.props.editSavedGame({...game});
     }
   }
-  componentDidMount() {
-    this.dragElement(document.getElementById("separator"), "V");
-  }
+  // componentDidMount() {
+  //   this.dragElement(document.getElementById("separator"), "V");
+  // }
   render() {
     return (
       <div className="MinesWeeper splitter">
